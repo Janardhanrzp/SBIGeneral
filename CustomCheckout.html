@@ -1,0 +1,51 @@
+<html>
+<meta name="viewport" content="width=device-width">
+<head><title>RazorPay Web Payment</title></head>
+<body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+  "key": "rzp_test_TNM7NAj5tr8DiY",
+  "amount": "125100", "currency": "INR",
+  //"order_id": "order_IKhh3ZejnUzox4",
+  "name": "SBI General Insurance",
+  "description": "Test Transaction",
+  "image": "https://www.sbigeneral.in/portal/static/media/logo.be3c6e72.svg",
+  "handler": function (response){
+      console.log(response.razorpay_payment_id);
+      window.parent.postMessage(response.razorpay_payment_id,"*");
+      console.log(response.razorpay_order_id);
+      window.parent.postMessage(response.razorpay_order_id,"*");
+      console.log(response.razorpay_signature);
+      window.parent.postMessage(response.razorpay_signature,"*");
+      window.parent.postMessage("SUCCESS","*"); //2
+
+    },
+  "prefill": {
+    "name": "Archanna  devi",
+    "email": "archannadevi@gmail.com",
+    "contact": "9901”456791"
+  },
+  "notes": {
+    "address": "Autofy"
+   },
+  "theme": {
+    "color": "#59ADE7"
+  },
+  "modal": {
+    "ondismiss": function(){
+    console.log("modal closed");
+      window.parent.postMessage("MODAL_CLOSED","*"); //3
+      }
+    }
+  };
+
+  var rzp1 = new Razorpay(options);
+  window.onload = function(e){ //1
+    rzp1.open();
+    e.preventDefault();
+  }
+
+</script>
+</body>
+</html>
